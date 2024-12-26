@@ -20,23 +20,14 @@ phases:
     commands:
       - echo "Running tests..."
       - echo "Building Docker image..."
-      # Debugging: Check the environment variables to ensure they are correctly set
-      - echo "DOCKER_REGISTRY_USERNAME: $DOCKER_REGISTRY_USERNAME"
-      - echo "DOCKER_REGISTRY_PASSWORD: $DOCKER_REGISTRY_PASSWORD"
-      - echo "DOCKER_REGISTRY_URL: $DOCKER_REGISTRY_URL"
-      
       # Ensure the Docker registry URL is correct (docker.io for Docker Hub)
       - export DOCKER_REGISTRY_URL=docker.io
-      
       # Log in to Docker Hub using the credentials stored in the parameter store
       - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
-      
       # Check if Dockerfile is present in the current directory
       - ls -l
-      
       # Build and tag the Docker image
       - docker build -t "$DOCKER_REGISTRY_USERNAME/sample-poc-repo:latest" .
-      
       # Push the Docker image to Docker Hub
       - docker push "$DOCKER_REGISTRY_USERNAME/sample-poc-repo:latest"
 
@@ -46,4 +37,4 @@ phases:
 
 artifacts:
   files:
-    - '**/*'
+    - '**/*' 
