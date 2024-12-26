@@ -5,4 +5,5 @@ set -e
 docker pull vamseek341/sample-poc-repo:latest
 
 # Run the Docker image as a container
-docker run -dit -p 80:80 vamseek341/sample-poc-repo
+docker run -dit -p 8080:80 vamseek341/sample-poc-repo
+
