@@ -5,24 +5,34 @@ env:
     DOCKER_REGISTRY_USERNAME: /cloud-cicd/docker-credentials/username
     DOCKER_REGISTRY_PASSWORD: /cloud-cicd/docker-credentials/password
     DOCKER_REGISTRY_URL: /cloud-cicd/docker-registry/url
+
 phases:
   install:
     runtime-versions:
       python: 3.11
+
   pre_build:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt
+
   build:
     commands:
       - echo "Running tests..."
       - echo "Building Docker image..."
+      # Ensure the Docker registry URL is correct (docker.io for Docker Hub)
+      - export DOCKER_REGISTRY_URL=docker.io
+      # Log in to Docker Hub using the credentials stored in the parameter store
       - echo "$DOCKER_REGISTRY_PASSWORD" | docker login -u "$DOCKER_REGISTRY_USERNAME" --password-stdin "$DOCKER_REGISTRY_URL"
-      - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/hotel-app:latest" .
-      - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/hotel-app:latest"
+      # Build and tag the Docker image
+      - docker build -t "$DOCKER_REGISTRY_USERNAME/sample-poc-repo:latest" .
+      # Push the Docker image to Docker Hub
+      - docker push "$DOCKER_REGISTRY_USERNAME/sample-poc-repo:latest"
+
   post_build:
     commands:
       - echo "Build completed successfully!"
+
 artifacts:
   files:
     - '**/*'
