@@ -13,9 +13,9 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - pip install -r requirements.txt
-      # Start Docker daemon explicitly
-      - sudo service docker start
-      - docker --version  # Check Docker version to confirm it's working
+      # Check if Docker is available and running
+      - docker --version
+      - docker info  # This should show Docker info if the daemon is running
 
   pre_build:
     commands:
