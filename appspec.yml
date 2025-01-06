@@ -1,6 +1,12 @@
 version: 0.0
-os: linux
-
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: ""
+        LoadBalancerInfo:
+          ContainerName: "my-cont"
+          ContainerPort: 80
 hooks:
   ApplicationStop:
     - location: scripts/stop_container.sh
